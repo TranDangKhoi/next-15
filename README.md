@@ -20,3 +20,19 @@ Trước hết, hãy làm theo phần Installation của ShadcnUI trước sau �
 
 Ví dụ, ta muốn tích hợp cho website của chúng ta một chiếc Acccordion với đầy đủ tính năng đóng/mở, animation mượt mà, khả năng custom cao. Thì ta chỉ vào ShadcnUI và bấm vào mục
 [Accordion](https://ui.shadcn.com/docs/components/accordion) của ShadcN
+
+## App Router
+
+Ở các phiên bản NextJS dạo gần đây, thay vì sử dụng phương thức Routing bằng **Page Router** như cũ thì bây giờ ta sẽ sử dụng **App Router**. Về căn bản thì cũng không có nhiều sự khác biệt lắm, để giúp ta dễ làm quen hơn khi chuyển sang cách tiếp cận mới.
+
+Nhưng đọc qua thì ta cũng sẽ thấy vài điểm khác biệt:
+
+- Routing bây giờ sẽ là server-centric thay vì là client-sided, điều này cũng đồng nghĩa với việc routing bây giờ sẽ hỗ trợ server components
+
+- Layouts có thể nested & dynamic thay vì static như trước
+
+Việc chọn App Router hay Page Router cho project của mình phần lớn là dựa vào nghiệp vụ của project đó:
+
+- Nếu bạn muốn mọi thứ đơn giản nhất có thể thì có thể sử dụng luôn Page Router
+
+- Còn nếu project phức tạp hơn, đòi hỏi flexiblility thì ta nên sử dụng App Router
