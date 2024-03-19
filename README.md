@@ -16,5 +16,7 @@ Nhưng mà cái gì cũng có qua có lại, với những dự án không quá 
 
 ### Cách dùng ShadcnUI
 
+Trước hết, hãy làm theo phần Installation của ShadcnUI trước sau đó:
+
 Ví dụ, ta muốn tích hợp cho website của chúng ta một chiếc Acccordion với đầy đủ tính năng đóng/mở, animation mượt mà, khả năng custom cao. Thì ta chỉ vào ShadcnUI và bấm vào mục
 [Accordion](https://ui.shadcn.com/docs/components/accordion) của ShadcN
