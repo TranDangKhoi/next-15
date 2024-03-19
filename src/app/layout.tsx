@@ -1,8 +1,31 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Roboto } from "next/font/google";
+import localFonts from "next/font/local";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto({
+  subsets: ["vietnamese"],
+  weight: ["100", "300", "500", "700"],
+});
+
+const myFont = localFonts({
+  src: [
+    {
+      path: "./fonts/Lemonada-Light.ttf",
+      weight: "100",
+    },
+    {
+      path: "./fonts/Lemonada-Regular.ttf",
+      weight: "400",
+    },
+    {
+      path: "./fonts/Lemonada-Medium.ttf",
+      weight: "500",
+    },
+  ],
+  display: "swap",
+  variable: "--font-lemonada",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${myFont.variable}`}>{children}</body>
     </html>
   );
 }
