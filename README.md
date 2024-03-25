@@ -83,6 +83,6 @@ Nhược điểm của Client Component:
 - Thiết bị client yếu thì chạy không nổi
 - Tăng bundle size javascript
 
-Lời khuyên từ cá nhân Được:
+Lời khuyên cá nhân:
 
-Dùng Server Component khi có thể, Được không đặt nặng vấn đề về cấu hình Server, vì dùng cho production thì server phải tốt. Quan trọng là trải nghiệm người dùng
+Dùng Server Component khi có thể,không đặt nặng vấn đề về cấu hình Server, vì dùng cho production thì server phải tốt. Quan trọng là trải nghiệm người dùng
