@@ -36,3 +36,53 @@ Việc chọn App Router hay Page Router cho project của mình phần lớn l�
 - Nếu bạn muốn mọi thứ đơn giản nhất có thể thì có thể sử dụng luôn Page Router
 
 - Còn nếu project phức tạp hơn, đòi hỏi flexiblility thì ta nên sử dụng App Router
+
+## Client component
+
+### React SPA truyền thống (React Vite, CRA, ...) là 1 client component khổng lồ
+
+Khi lần đầu vào 1 trang web
+
+1. Trình duyệt **request** đến server và trả về file `index.html` cơ bản (hầu như không chứa html gì nhiều)
+2. Trình duyệt nhận thấy trong file html có link đến file js, css nên là **request lần nữa** đến server để lấy file js, css
+3. Trình duyệt tiến hành chạy code JS để render ra HTML và gắn sự kiện vào HTML đó
+4. Người dùng thấy và tương tác được với trang web
+
+Trong quá trình này, web sẽ trắng xóa cho đến khi bước thứ 3 được hoàn thành.
+
+Vậy nên mới nói lần đầu tiên khi truy cập vào các SPA truyền thống khá lâu, nhưng sau đó thì thao tác hay chuyển trang sẽ rất nhanh vì js bundle cả app đã có ở client rồi, nếu cần data thì mới request đến server lấy data thôi.
+
+Các bạn để ý cái bước thứ 3, lúc nào HTML cũng được JavaScript trình duyệt render ra khi chúng ta truy cập vào web. Cái này gọi là **Dynamic Rendering**
+
+Với Dynamic Rendering, HTML được render ra khi chúng ta request, có thể được render ở client hoặc server đều được.
+
+### Client Component Next.js
+
+Dùng client component khi:
+
+- Cần tương tác: dùng hook, useState, useEffect, event listener (onClick, onSubmit, onChange,...), ...
+- Cần dùng các API từ trình duyệt
+
+Trong Next.js, mặc định tất cả các component đều được render ra HTML sẵn khi có thể lúc Nextjs build (Static Rendering). Kể cả Server component và Client component.
+
+Vậy nên khi bạn truy cập vào 1 trang web Next.js, bạn sẽ thấy UI ngay lập tức do Server Next.js trả về HTML đã render sẵn. Sau đó trình duyệt sẽ render lại CLient Component 1 lần nữa để đồng bộ DOM, sự kiện, state, effect.
+
+Rút ra được điều gì từ đây?
+
+- Client Component bị render tối thiểu 2 lần: 1 lần khi build, 1+ lần ở client
+- Vì trả về HTML sẵn nên người dùng có thể thấy content ngay lập tức (Tăng UX)
+- Dù thấy content ngay lập tức nhưng vẫn không thể tương tác ngay được vì cần phải chờ trình duyệt đồng bộ lại client component (render, gắn sự kiện, state, effect...)
+
+Ưu điểm của Client Component:
+
+- Giảm gánh nặng cho server khi component nặng và phức tạp về logic => Server yếu thì nên dùng
+
+Nhược điểm của Client Component:
+
+- SEO không tốt
+- Thiết bị client yếu thì chạy không nổi
+- Tăng bundle size javascript
+
+Lời khuyên từ cá nhân Được:
+
+Dùng Server Component khi có thể, Được không đặt nặng vấn đề về cấu hình Server, vì dùng cho production thì server phải tốt. Quan trọng là trải nghiệm người dùng
