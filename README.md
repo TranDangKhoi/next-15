@@ -135,6 +135,8 @@ Ví dụ chúng ta navigate từ `/home` sang `/about`
 
 Thì server Next.js sẽ không trả HTML về cho chúng ta nữa mà trả React Server Component Payload (RSC Payload) và các bundle JS, CSS cần thiết.
 
-Client sẽ tự render ra HTML
+Lúc này, client sẽ tự render ra HTML (Điều này không đồng nghĩa với việc Server không render ra HTML nữa, mà là do Server đã render ra RSC Payload rồi và trong cái RSC Payload đó đã có sẵn HTML).
+
+> Nguyên nhân: Như trên đã viết, React Server Component Payload là 1 data đặc biệt được render ở phía Server phục vụ cho việc đồng bộ, cập nhật DOM giữa Client Component và Server Component. Và vì nó đã render ở phía Server thế nên các lần navigate sau sẽ không cần phải trả ra file HTML nữa, mà dựa vào cái payload đó mà render ra thôi
 
 Điều này sẽ giúp việc navigation nhanh hơn, nhưng vẫn đảm bảo về SEO
