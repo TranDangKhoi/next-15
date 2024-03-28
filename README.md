@@ -37,7 +37,7 @@ Việc chọn App Router hay Page Router cho project của mình phần lớn l�
 
 - Còn nếu project phức tạp hơn, đòi hỏi flexiblility thì ta nên sử dụng App Router
 
-## Client component
+## Khác biệt giữa Client Component và Server Component trong Next.js
 
 ### React SPA truyền thống (React Vite, CRA, ...) là 1 client component khổng lồ
 
@@ -86,3 +86,19 @@ Nhược điểm của Client Component:
 Lời khuyên cá nhân:
 
 Dùng Server Component khi có thể,không đặt nặng vấn đề về cấu hình Server, vì dùng cho production thì server phải tốt. Quan trọng là trải nghiệm người dùng
+
+### Server Component Next.js
+
+Đây là chế độ mặc định khi bạn tạo một component trong Next.js
+
+Ưu điểm:
+
+- Fetch data ở server => Nơi gần data center nên là sẽ nhanh hơn là fetch ở client => Giảm thiểu thời gian rendering, tăng UX
+- Bảo mật: Server cho phép giữ các data nhạy cảm, logic đặc biệt không muốn public ở client
+- Caching: Vì được render ở server nên có thể lưu giữ cache cho nhiều người dùng khác nhau => Không cần render trên mỗi request
+- Bundle Size: Giảm thiểu JS bundle size vì client không cần tải về phần JS logic để render HTML
+- Load trang lần đầu nhanh và chỉ số FCP (First Contentful Paint) thấp do người dùng sẽ thấy content ngay lập tức
+- Search Engine Optimization and Social Network Shareability
+- Streaming
+
+=> Ưu tiên dùng Server Component khi có thể
