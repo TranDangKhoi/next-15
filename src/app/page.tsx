@@ -1,23 +1,20 @@
+"use client";
 import Image from "next/image";
-import { redirect } from "next/navigation";
-
-const isLoggedIn = false;
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  if (!isLoggedIn) {
-    redirect("/login");
-  }
+  const router = useRouter();
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="flex items-center gap-3">
         {/* <Link href={"/login"}>Login Page</Link>
         <Link href={"/register"}>Register Page</Link> */}
-        {/* <button type="button" onClick={() => router.push("/login")}>
+        <button type="button" onClick={() => router.push("/login")}>
           Login Page
         </button>
         <button type="button" onClick={() => router.push("/register")}>
           Register Page
-        </button> */}
+        </button>
         {/* <ButtonRedirect></ButtonRedirect> */}
       </div>
       <Image

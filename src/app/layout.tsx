@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import localFonts from "next/font/local";
 import "./globals.css";
+import { ThemeProvider } from "src/components/theme-provider";
 
 const roboto = Roboto({
   subsets: ["vietnamese"],
@@ -39,7 +40,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${myFont.variable}`}>{children}</body>
+      <body className={`${myFont.variable}`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          // disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

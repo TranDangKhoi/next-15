@@ -13,7 +13,7 @@ const Card = ({ something }: TCardProps) => {
   return (
     <>
       <button
-        className="p-4 rounded-sm text-sm font-light font-lemonada"
+        className="p-4 rounded-sm text-sm font-light font-lemonada bg-card"
         onClick={() => setIsExpanding(!isExpanding)}
       >
         Click here to expand
