@@ -9,7 +9,6 @@ type TCardProps = {
 
 const Card = ({ something }: TCardProps) => {
   const [isExpanding, setIsExpanding] = useState<boolean>(false);
-  console.log(isExpanding);
   return (
     <>
       <button
