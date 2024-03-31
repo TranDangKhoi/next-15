@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ThemeToggle from "src/components/toggle-theme";
+import ThemeToggle from "src/components/theme-toggle";
 
 export default function NavigationBar() {
   return (
