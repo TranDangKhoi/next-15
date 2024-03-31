@@ -33,7 +33,7 @@ export default function RegisterForm() {
     <Form {...registerForm}>
       <form
         onSubmit={registerForm.handleSubmit(onSubmit)}
-        className="space-y-8"
+        className="space-y-4"
       >
         <FormField
           control={registerForm.control}
@@ -105,7 +105,9 @@ export default function RegisterForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button className="w-full" type="submit">
+          Submit
+        </Button>
       </form>
     </Form>
   );
