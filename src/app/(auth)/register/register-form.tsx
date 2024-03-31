@@ -27,6 +27,7 @@ export default function RegisterForm() {
     const result = await fetch(
       `${parsedEnvData.NEXT_PUBLIC_API_ENDPOINT}/auth/register`,
       {
+        method: "POST",
         body: JSON.stringify(values),
         headers: {
           "Content-Type": "application/json",
