@@ -37,10 +37,27 @@ export default function RegisterForm() {
       >
         <FormField
           control={registerForm.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Tên người dùng</FormLabel>
+              <FormControl>
+                <Input
+                  className="outline-none focus-visible:ring-0"
+                  placeholder="John Doe"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={registerForm.control}
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>E-mail</FormLabel>
+              <FormLabel>Địa chỉ e-mail</FormLabel>
               <FormControl>
                 <Input
                   className="outline-none focus-visible:ring-0"
@@ -48,7 +65,42 @@ export default function RegisterForm() {
                   {...field}
                 />
               </FormControl>
-              {/* <FormDescription>This is your .</FormDescription> */}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={registerForm.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Mật khẩu</FormLabel>
+              <FormControl>
+                <Input
+                  className="outline-none focus-visible:ring-0"
+                  placeholder="Nhập vào mật khẩu của bạn"
+                  type="password"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={registerForm.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Xác nhận mật khẩu</FormLabel>
+              <FormControl>
+                <Input
+                  className="outline-none focus-visible:ring-0"
+                  placeholder="Nhập lại mật khẩu của bạn"
+                  type="password"
+                  {...field}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
