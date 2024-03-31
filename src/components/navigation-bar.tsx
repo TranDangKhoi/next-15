@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ModeToggle from "src/components/toggle-theme";
+import ThemeToggle from "src/components/toggle-theme";
 
 export default function NavigationBar() {
   return (
@@ -12,7 +12,7 @@ export default function NavigationBar() {
           <Link href="/login">Đăng nhập</Link>
         </li>
       </ul>
-      <ModeToggle></ModeToggle>
+      <ThemeToggle></ThemeToggle>
     </nav>
   );
 }
