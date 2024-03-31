@@ -10,5 +10,5 @@ export default function LoginLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <main className="w-[680px] mx-auto flex flex-col">{children}</main>;
+  return <main>{children}</main>;
 }

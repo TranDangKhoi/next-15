@@ -33,7 +33,7 @@ export default function RegisterForm() {
     <Form {...registerForm}>
       <form
         onSubmit={registerForm.handleSubmit(onSubmit)}
-        className="space-y-4"
+        className="space-y-4 mt-4 w-[680px] mx-auto flex flex-col"
       >
         <FormField
           control={registerForm.control}
