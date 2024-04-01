@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
+
 import localFonts from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "src/components/theme-provider";
 import NavigationBar from "src/components/navigation-bar";
+import { Toaster } from "src/components/ui/toaster";
 
 const roboto = Roboto({
   subsets: ["vietnamese"],
@@ -49,6 +51,7 @@ export default function RootLayout({
           // disableTransitionOnChange
         >
           <NavigationBar></NavigationBar>
+          <Toaster></Toaster>
           {children}
         </ThemeProvider>
       </body>

@@ -32,7 +32,17 @@ export default function RegisterForm() {
           "Content-Type": "application/json",
         },
       }
-    ).then((res) => res.json());
+    ).then(async (res) => {
+      const payload = await res.json();
+      const data = {
+        status: res.status,
+        payload,
+      };
+      if (!res.ok) {
+        throw data;
+      }
+      return data;
+    });
     console.log(result);
   }
 

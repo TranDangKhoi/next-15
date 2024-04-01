@@ -12,8 +12,10 @@ import {
   FormMessage,
 } from "src/components/ui/form";
 import { Input } from "src/components/ui/input";
+import { useToast } from "src/components/ui/use-toast";
 import { TLoginSchema, loginSchema } from "src/schemas/login.schema";
 export default function LoginForm() {
+  const { toast } = useToast();
   const loginForm = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -23,19 +25,56 @@ export default function LoginForm() {
     mode: "onSubmit",
   });
   async function onSubmit(values: TLoginSchema) {
-    const result = await fetch(
-      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/auth/login`,
-      {
-        method: "POST",
-        body: JSON.stringify(values),
-        headers: {
-          "Content-Type": "application/json",
-        },
+    try {
+      const result = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/auth/login`,
+        {
+          method: "POST",
+          body: JSON.stringify(values),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ).then(async (res) => {
+        const payload = await res.json();
+        const data = {
+          status: res.status,
+          payload,
+        };
+        if (!res.ok) {
+          throw data;
+        }
+        toast({
+          title: "Đăng nhập thành công",
+          description:
+            "Vui lòng đợi trong giây lát, chúng tôi đang xử lí yêu cầu của bạn",
+          variant: "destructive",
+        });
+        return data;
+      });
+      console.log(result);
+    } catch (error: any) {
+      console.log(error);
+      const errors = error?.payload?.errors as {
+        field: keyof TLoginSchema;
+        message: string;
+      }[];
+      const status = error.status as number;
+      if (status === 422) {
+        errors.forEach((error) => {
+          loginForm.setError(error.field, {
+            type: "server",
+            message: error.message,
+          });
+        });
+      } else {
+        toast({
+          title: "Đã có lỗi xảy ra",
+          description: "Vui lòng thử lại sau",
+        });
       }
-    ).then((res) => res.json());
-    console.log(result);
+    }
   }
-
   function onErrors(errors: FieldErrors<TLoginSchema>) {
     console.log(errors);
   }
@@ -82,7 +121,6 @@ export default function LoginForm() {
               </FormItem>
             )}
           />
-
           <Button className="w-full" type="submit">
             Submit
           </Button>
