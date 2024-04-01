@@ -1,8 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, FieldErrors } from "react-hook-form";
-import { z } from "zod";
-import { registerSchema } from "src/schemas/register.schema";
+import { FieldErrors, useForm } from "react-hook-form";
 import { Button } from "src/components/ui/button";
 import {
   Form,
@@ -14,8 +12,9 @@ import {
 } from "src/components/ui/form";
 import { Input } from "src/components/ui/input";
 import parsedEnvData from "src/config";
+import { TRegisterSchema, registerSchema } from "src/schemas/register.schema";
 export default function RegisterForm() {
-  const registerForm = useForm<z.infer<typeof registerSchema>>({
+  const registerForm = useForm<TRegisterSchema>({
     resolver: zodResolver(registerSchema),
     mode: "onSubmit",
     defaultValues: {
@@ -23,7 +22,7 @@ export default function RegisterForm() {
       name: "",
     },
   });
-  async function onSubmit(values: z.infer<typeof registerSchema>) {
+  async function onSubmit(values: TRegisterSchema) {
     const result = await fetch(
       `${parsedEnvData.NEXT_PUBLIC_API_ENDPOINT}/auth/register`,
       {
@@ -37,7 +36,7 @@ export default function RegisterForm() {
     console.log(result);
   }
 
-  function onErrors(errors: FieldErrors<z.infer<typeof registerSchema>>) {
+  function onErrors(errors: FieldErrors<TRegisterSchema>) {
     console.log(errors);
   }
 

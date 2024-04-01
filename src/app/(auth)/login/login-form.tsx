@@ -1,7 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Fragment } from "react";
-import { useForm, FieldErrors } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 import { Button } from "src/components/ui/button";
 import {
   Form,
@@ -12,10 +12,9 @@ import {
   FormMessage,
 } from "src/components/ui/form";
 import { Input } from "src/components/ui/input";
-import { loginSchema } from "src/schemas/login.schema";
-import { z } from "zod";
+import { TLoginSchema, loginSchema } from "src/schemas/login.schema";
 export default function LoginForm() {
-  const loginForm = useForm<z.infer<typeof loginSchema>>({
+  const loginForm = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -23,7 +22,7 @@ export default function LoginForm() {
     },
     mode: "onSubmit",
   });
-  async function onSubmit(values: z.infer<typeof loginSchema>) {
+  async function onSubmit(values: TLoginSchema) {
     const result = await fetch(
       `${process.env.NEXT_PUBLIC_API_ENDPOINT}/auth/login`,
       {
@@ -37,7 +36,7 @@ export default function LoginForm() {
     console.log(result);
   }
 
-  function onErrors(errors: FieldErrors<z.infer<typeof loginSchema>>) {
+  function onErrors(errors: FieldErrors<TLoginSchema>) {
     console.log(errors);
   }
   return (
