@@ -1,3 +1,9 @@
+import LoginForm from "src/app/(auth)/login/login-form";
+
 export default function LoginPage() {
-  return <div>This is a login page</div>;
+  return (
+    <div>
+      <LoginForm></LoginForm>
+    </div>
+  );
 }
