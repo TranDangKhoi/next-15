@@ -123,7 +123,7 @@ Mọi component dù là Server Component hay Client Component khi build đều s
 
 3. Trong đống JS Bundle download về có chứa **React Server Component Payload (RSC Payload)**, cái này dùng để để render lại client component ở client, cập nhật DOM
 
-4. Cuối cùng là sẽ thêm các sự kiện vào các client component để tương tác với người dùng => Bước này gọi là Hydration, sau bước này thì có thể tương tác với website
+<a id="ditto"></a> 4. Cuối cùng là sẽ thêm các sự kiện vào các client component để tương tác với người dùng => Bước này gọi là Hydration, sau bước này thì có thể tương tác với website
 
 > React Server Component Payload là 1 data đặc biệt được render ở phía Server phục vụ cho việc đồng bộ, cập nhật DOM giữa Client Component và Server Component
 
@@ -137,6 +137,6 @@ Thì server Next.js sẽ không trả HTML về cho chúng ta nữa mà trả Re
 
 Lúc này, client sẽ tự render ra HTML (Điều này không đồng nghĩa với việc Server không render ra HTML nữa, mà là do Server đã render ra RSC Payload rồi và trong cái RSC Payload đó đã có sẵn HTML).
 
-> Nguyên nhân: Như trên đã viết, React Server Component Payload là 1 data đặc biệt được render ở phía Server phục vụ cho việc đồng bộ, cập nhật DOM giữa Client Component và Server Component. Và vì nó đã render ở phía Server thế nên các lần navigate sau sẽ không cần phải trả ra file HTML nữa, mà dựa vào cái payload đó mà render ra thôi
+> Nguyên nhân: [Như trên đã viết](#ditto), React Server Component Payload là 1 data đặc biệt được render ở phía Server phục vụ cho việc đồng bộ, cập nhật DOM giữa Client Component và Server Component. Và vì nó đã render ở phía Server thế nên các lần navigate sau sẽ không cần phải trả ra file HTML nữa, mà dựa vào cái payload đó mà render ra thôi
 
 Điều này sẽ giúp việc navigation nhanh hơn, nhưng vẫn đảm bảo về SEO
