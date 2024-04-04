@@ -206,7 +206,7 @@ Middleware này sẽ chạy ngay khi có request gửi đến server Next.js, tr
 
 Nhưng chúng ta cần 1 thứ gì đó để Next.js biết được user đã authenticated hay chưa, và thứ đó là chỉ có thể là cookie từ trình duyệt gửi lên. Vì khi bạn enter url `/profile` thì chỉ có cookie là được gửi kèm theo request đến server Next.js.
 
-Nãy giờ chưa setup cookie gì cả, bây giờ chúng ta sẽ setup logic cookie. Đó là khi chúng ta login thành công thì chúng ta sẽ set cookie là `isLogged=true` vào trình duyệt ở client luôn. Cookie này có thời hạn tương tự với token, và cookie `isLogged` có thể dùng JavaScript can thiệp được. Như vậy thì khi request đến server Next.js thì server sẽ biết được user đã authenticated hay chưa dựa vào cookie `isLogged`. Client next.js cũng sẽ biết được user đã authenticated hay chưa dựa vào cookie `isLogged` (hoặc giá trị lưu trong localStorage tùy thích, nhưng khuyến khích dùng `isLogged` từ cookie cho đồng bộ).
+Nãy giờ chưa setup cookie gì cả, bây giờ chúng ta sẽ setup logic cookie. Đó là khi chúng ta login thành công thì chúng ta sẽ set cookie là `isLoggedIn=true` vào trình duyệt ở client luôn. Cookie này có thời hạn tương tự với token, và cookie `isLoggedIn` có thể dùng JavaScript can thiệp được. Như vậy thì khi request đến server Next.js thì server sẽ biết được user đã authenticated hay chưa dựa vào cookie `isLoggedIn`. Client next.js cũng sẽ biết được user đã authenticated hay chưa dựa vào cookie `isLoggedIn` (hoặc giá trị lưu trong localStorage tùy thích, nhưng khuyến khích dùng `isLoggedIn` từ cookie cho đồng bộ).
 
 Và đây là middleware ở server next.js
 
@@ -215,9 +215,9 @@ export const config = {
   matcher: ["/profile"],
 };
 export function middleware(request: NextRequest) {
-  const isLogged =
-    (request.cookies.get("isLogged")?.value as string | undefined) === "true";
-  if (!isLogged) return new Response("Chưa đăng nhập", { status: 401 });
+  const isLoggedIn =
+    (request.cookies.get("isLoggedIn")?.value as string | undefined) === "true";
+  if (!isLoggedIn) return new Response("Chưa đăng nhập", { status: 401 });
 }
 ```
 
