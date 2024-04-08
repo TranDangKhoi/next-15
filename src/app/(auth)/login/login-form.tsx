@@ -54,9 +54,17 @@ export default function LoginForm() {
       const resultFromNextServer = await fetch("/api/auth", {
         method: "POST",
         body: JSON.stringify(result),
+      }).then(async (res) => {
+        const payloadFromNextServer = await res.json();
+        const data = {
+          status: res.status,
+          payload: payloadFromNextServer,
+        };
+        if (!res.ok) {
+          throw data;
+        }
+        console.log(data);
       });
-      const payloadFromNextServer = await resultFromNextServer.json();
-      console.log(payloadFromNextServer);
     } catch (error: any) {
       console.log(error);
       const errors = error?.payload?.errors as {
