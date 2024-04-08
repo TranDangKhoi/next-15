@@ -44,15 +44,19 @@ export default function LoginForm() {
         if (!res.ok) {
           throw data;
         }
-        toast({
-          title: "Đăng nhập thành công",
-          description:
-            "Vui lòng đợi trong giây lát, chúng tôi đang xử lí yêu cầu của bạn",
-          variant: "destructive",
-        });
         return data;
       });
-      console.log(result);
+      toast({
+        title: "Đăng nhập thành công",
+        description:
+          "Vui lòng đợi trong giây lát, chúng tôi đang xử lí yêu cầu của bạn",
+      });
+      const resultFromNextServer = await fetch("/api/auth", {
+        method: "POST",
+        body: JSON.stringify(result),
+      });
+      const payloadFromNextServer = await resultFromNextServer.json();
+      console.log(payloadFromNextServer);
     } catch (error: any) {
       console.log(error);
       const errors = error?.payload?.errors as {
@@ -71,6 +75,7 @@ export default function LoginForm() {
         toast({
           title: "Đã có lỗi xảy ra",
           description: "Vui lòng thử lại sau",
+          variant: "destructive",
         });
       }
     }
