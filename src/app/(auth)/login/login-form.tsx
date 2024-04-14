@@ -2,6 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Fragment } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
+import { useAuthContext } from "src/app/AuthProvider";
 import { Button } from "src/components/ui/button";
 import {
   Form,
@@ -16,6 +17,7 @@ import { useToast } from "src/components/ui/use-toast";
 import { TLoginSchema, loginSchema } from "src/schemas/login.schema";
 export default function LoginForm() {
   const { toast } = useToast();
+  const { setSessionToken } = useAuthContext();
   const loginForm = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -54,6 +56,9 @@ export default function LoginForm() {
       const resultFromNextServer = await fetch("/api/auth", {
         method: "POST",
         body: JSON.stringify(result),
+        headers: {
+          "Content-Type": "application/json",
+        },
       }).then(async (res) => {
         const payloadFromNextServer = await res.json();
         const data = {
@@ -64,6 +69,7 @@ export default function LoginForm() {
           throw data;
         }
         console.log(data);
+        setSessionToken(data?.payload?.data?.token);
       });
     } catch (error: any) {
       console.log(error);

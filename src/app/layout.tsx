@@ -6,6 +6,7 @@ import "./globals.css";
 import { ThemeProvider } from "src/components/theme-provider";
 import NavigationBar from "src/components/navigation-bar";
 import { Toaster } from "src/components/ui/toaster";
+import AuthProvider from "src/app/AuthProvider";
 
 const roboto = Roboto({
   subsets: ["vietnamese"],
@@ -52,7 +53,7 @@ export default function RootLayout({
         >
           <NavigationBar></NavigationBar>
           <Toaster></Toaster>
-          {children}
+          <AuthProvider>{children}</AuthProvider>
         </ThemeProvider>
       </body>
     </html>
