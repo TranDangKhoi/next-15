@@ -7,6 +7,7 @@ import { ThemeProvider } from "src/components/theme-provider";
 import NavigationBar from "src/components/navigation-bar";
 import { Toaster } from "src/components/ui/toaster";
 import AuthProvider from "src/app/AuthProvider";
+import { cookies } from "next/headers";
 
 const roboto = Roboto({
   subsets: ["vietnamese"],
@@ -42,6 +43,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = cookies();
+  const sessionToken = cookieStore.get("sessionToken")?.value;
   return (
     <html lang="en">
       <body className={`${myFont.variable}`}>
@@ -53,7 +56,9 @@ export default function RootLayout({
         >
           <NavigationBar></NavigationBar>
           <Toaster></Toaster>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider initialSessionToken={sessionToken}>
+            {children}
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -1,4 +1,5 @@
 "use client";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { createContext, useContext, useState } from "react";
 
 type TAuthContext = {
@@ -20,11 +21,13 @@ export const useAuthContext = () => {
 };
 
 export default function AuthProvider({
+  initialSessionToken = "",
   children,
 }: {
+  initialSessionToken?: string;
   children: React.ReactNode;
 }) {
-  const [sessionToken, setSessionToken] = useState("");
+  const [sessionToken, setSessionToken] = useState(initialSessionToken);
   return (
     <AuthContext.Provider value={{ sessionToken, setSessionToken }}>
       {children}

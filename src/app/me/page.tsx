@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import Profile from "src/app/me/profile";
 export default async function page() {
   const cookieStore = cookies();
   const sessionToken = cookieStore.get("sessionToken");
@@ -24,6 +25,7 @@ export default async function page() {
       <h1 className="text-xl font-semibold">
         Xin chào {result.payload.data?.name}
       </h1>
+      <Profile></Profile>
     </div>
   );
 }
