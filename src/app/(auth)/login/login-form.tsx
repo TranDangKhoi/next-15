@@ -72,7 +72,6 @@ export default function LoginForm() {
         setSessionToken(data?.payload?.data?.token);
       });
     } catch (error: any) {
-      console.log(error);
       const errors = error?.payload?.errors as {
         field: keyof TLoginSchema;
         message: string;

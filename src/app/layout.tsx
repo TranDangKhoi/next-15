@@ -46,7 +46,7 @@ export default function RootLayout({
   const cookieStore = cookies();
   const sessionToken = cookieStore.get("sessionToken")?.value;
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${myFont.variable}`}>
         <ThemeProvider
           attribute="class"

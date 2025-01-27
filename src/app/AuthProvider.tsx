@@ -1,5 +1,4 @@
 "use client";
-import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { createContext, useContext, useState } from "react";
 
 type TAuthContext = {

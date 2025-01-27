@@ -19,7 +19,9 @@ export default function RegisterForm() {
     mode: "onSubmit",
     defaultValues: {
       email: "",
+      password: "",
       name: "",
+      confirmPassword: "",
     },
   });
   async function onSubmit(values: TRegisterSchema) {
