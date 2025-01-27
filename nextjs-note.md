@@ -10,5 +10,6 @@ VÀ VÌ LÝ DO TRÊN NÊN TA PHẢI THÊM LƯU Ý NỮA: Đó chính là `proces
 const myNextEnvinronmentVariables = process.env;
 
 // ✅ Right way (this will return the value of that env variable):
+"use client";
 const myNextPublicAPI = process.env.NEXT_PUBLIC_API;
 ```
