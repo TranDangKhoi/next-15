@@ -10,8 +10,12 @@ export function middleware(request: NextRequest) {
   const sessionToken = request.cookies.get("sessionToken")?.value;
 
   // Skip middleware for static files
-  console.log(request.nextUrl.pathname);
-  if (pathname.startsWith("/_next") || pathname.startsWith("/static")) {
+  if (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/static") ||
+    pathname.startsWith("/api") ||
+    pathname === "/"
+  ) {
     return NextResponse.next();
   }
 
@@ -20,24 +24,25 @@ export function middleware(request: NextRequest) {
     authRequiredPaths.some((path) => pathname.startsWith(path)) &&
     !sessionToken
   ) {
-    return NextResponse.rewrite(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
   if (publicPaths.some((path) => pathname.startsWith(path)) && sessionToken) {
-    return NextResponse.rewrite(new URL("/me", request.url));
+    console.log("Ran here");
+    return NextResponse.redirect(new URL("/me", request.url));
   }
 
   if (
     !authRequiredPaths.some((path) => pathname.startsWith(path)) &&
     !publicPaths.some((path) => pathname.startsWith(path))
   ) {
-    return NextResponse.rewrite(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();
 }
 
-// See "Matching Paths" below to learn more
+// If any paths are included in the matcher, it will invoke the middleware; otherwise, it will not.
 export const config = {
   matcher: [...authRequiredPaths],
 };

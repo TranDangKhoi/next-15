@@ -17,7 +17,7 @@ import { useToast } from "src/components/ui/use-toast";
 import { TLoginSchema, loginSchema } from "src/schemas/login.schema";
 export default function LoginForm() {
   const { toast } = useToast();
-  const { setSessionToken } = useAuthContext();
+  const { sessionToken, setSessionToken } = useAuthContext();
   const loginForm = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -58,6 +58,10 @@ export default function LoginForm() {
         body: JSON.stringify(result),
         headers: {
           "Content-Type": "application/json",
+          // If process.env.COOKIE_MODE returns true, then we need to add the Authorization header
+          // ...(!process.env.NEXT_PUBLIC_API_ENDPOINT && {
+          //   Authorization: `Bearer ${sessionToken}`,
+          // }),
         },
       }).then(async (res) => {
         const payloadFromNextServer = await res.json();
@@ -68,7 +72,6 @@ export default function LoginForm() {
         if (!res.ok) {
           throw data;
         }
-        console.log(data);
         setSessionToken(data?.payload?.data?.token);
       });
     } catch (error: any) {
@@ -114,6 +117,7 @@ export default function LoginForm() {
                   <Input
                     className="outline-none focus-visible:ring-0"
                     placeholder="example@gmail.com"
+                    type="email"
                     {...field}
                   />
                 </FormControl>

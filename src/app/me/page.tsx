@@ -19,13 +19,12 @@ export default async function page() {
     };
     return data;
   });
-  console.log(result);
   return (
     <div>
       <h1 className="text-xl font-semibold">
         Xin chào {result.payload.data?.name}
       </h1>
-      <Profile></Profile>
+      <Profile email={result.payload.data.email}></Profile>
     </div>
   );
 }
