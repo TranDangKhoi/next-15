@@ -55,6 +55,56 @@ Cookies sẽ khó hiểu hơn một chút so với Local Storage hay Session Sto
 | **Thời gian tồn tại**  | Có thể cấu hình (`Max-Age`, `Expires`) hoặc theo session  | Tồn tại lâu dài, không hết hạn.              | Hết hạn khi đóng tab/trình duyệt. |
 | **Truy cập từ server** | **Có**: Cookie được gửi tự động đến server trong request. | **Không**: Chỉ lưu trên client.              | **Không**: Chỉ lưu trên client.   |
 | **Truy cập từ client** | Có thể bị hạn chế bằng `HttpOnly`                         | Dễ dàng truy cập qua JavaScript.             | Dễ dàng truy cập qua JavaScript.  |
-| **Bảo mật HTTPS**      | Có thể bảo vệ bằng `Secure` và `HttpOnly`.                | Không có bảo vệ HTTPS.                       | Không có bảo vệ HTTPS.            |
+| **Bảo mật HTTPS**      | Có thể bảo vệ bằng `Secure` và `HttpOnly`.                | Không có bảo vệ HTTPS.                       | Không có bảo vệ HTTPS. \*\*\*\*   |
 | **Cross-domain**       | Có thể gửi cookies qua domain khác với `SameSite: None`.  | Không hỗ trợ cross-domain.                   | Không hỗ trợ cross-domain.        |
 | **Sử dụng phổ biến**   | Xác thực, lưu session, trạng thái người dùng.             | Lưu dữ liệu lâu dài trên client (key-value). | Lưu dữ liệu tạm thời trên client. |
+
+## 5. Một vài lưu ý khi sử dụng Cookie (liên quan tới Domain và Cross-Domain)
+
+#### 5.1. Client và Server có cùng domain (VD: abc.com)
+
+Khi client và server mà bạn sử dụng có chung một domain. Ví dụ thực tế như sau:
+
+- Client: abc.com
+- Server: abc.com/api
+
+→ Mọi request từ trình duyệt đến abc.com tới abc.com/api hoặc sub.abc.com/api sẽ tự động kèm cookie đó ở trong phần Headers với nội dung như sau:
+
+```http
+Set-Cookie: sessionToken=abc123; Domain=abc.com; Path=/
+```
+
+#### 5.2. Client và server có domain KHÁC NHAU (VD: client.com và server.com) → CẦN CẤU HÌNH ĐẶC BIỆT
+
+❌ Mặc định, cookie sẽ không hoạt động giữa hai domain khác nhau.
+✅ Muốn dùng được, server phải set cookie với các điều kiện sau:
+
+- SameSite=None
+- Secure (phải chạy trên HTTPS)
+- Hỗ trợ CORS (Cross-Origin Resource Sharing)
+
+Ví dụ, server (server.com) cần phản hồi thế này:
+
+```http
+Set-Cookie: sessionToken=abc123; Domain=client.com; Path=/; Secure; HttpOnly; SameSite=None
+```
+
+Như vậy, cookie có thể hoạt động giữa client.com và server.com.
+
+#### 5.3. Nếu client và server có cùng gốc nhưng khác subdomain (VD: api.client.com & client.com)
+
+- Nếu cookie được set với Domain=client.com, thì nó sẽ dùng được cho cả client.com và api.client.com.
+- Nếu cookie không có Domain, nó sẽ chỉ có hiệu lực với domain đã set nó.
+
+```http
+Set-Cookie: sessionToken=abc123; Domain=client.com; Path=/;
+```
+
+→ Cookie này dùng được cho client.com, api.client.com, sub.client.com.
+
+### Kết luận dễ nhớ
+
+Kết luận dễ nhớ
+✅ Cùng domain? → Không có vấn đề gì, cookie gửi tự động.
+❌ Khác domain? → Phải dùng SameSite=None, Secure và bật CORS.
+✅ Khác subdomain? → Nếu set Domain=client.com, cookie có thể hoạt động trên tất cả subdomain của nó.
