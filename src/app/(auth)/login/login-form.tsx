@@ -1,8 +1,9 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { Fragment } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
-import { useAuthContext } from "src/app/AuthProvider";
+import authApiRequest from "src/app/api/auth/requests";
 import { Button } from "src/components/ui/button";
 import {
   Form,
@@ -17,7 +18,7 @@ import { useToast } from "src/components/ui/use-toast";
 import { TLoginSchema, loginSchema } from "src/schemas/login.schema";
 export default function LoginForm() {
   const { toast } = useToast();
-  const { sessionToken, setSessionToken } = useAuthContext();
+  const router = useRouter();
   const loginForm = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -28,69 +29,36 @@ export default function LoginForm() {
   });
   async function onSubmit(values: TLoginSchema) {
     try {
-      const result = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/auth/login`,
-        {
-          method: "POST",
-          body: JSON.stringify(values),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      ).then(async (res) => {
-        const payload = await res.json();
-        const data = {
-          status: res.status,
-          payload,
-        };
-        if (!res.ok) {
-          throw data;
-        }
-        return data;
-      });
+      const result = await authApiRequest.login(values);
       toast({
         title: "Đăng nhập thành công",
         description:
           "Vui lòng đợi trong giây lát, chúng tôi đang xử lí yêu cầu của bạn",
       });
-      const resultFromNextServer = await fetch("/api/auth", {
-        method: "POST",
-        body: JSON.stringify(result),
-        headers: {
-          "Content-Type": "application/json",
-          // If process.env.COOKIE_MODE returns true, then we need to add the Authorization header
-          // ...(!process.env.NEXT_PUBLIC_API_ENDPOINT && {
-          //   Authorization: `Bearer ${sessionToken}`,
-          // }),
-        },
-      }).then(async (res) => {
-        const payloadFromNextServer = await res.json();
-        const data = {
-          status: res.status,
-          payload: payloadFromNextServer,
-        };
-        if (!res.ok) {
-          throw data;
-        }
-        setSessionToken(data?.payload?.data?.token);
-      });
+      const resultFromNextServer = await authApiRequest
+        .setToken({
+          sessionToken: result?.payload.data?.token,
+        })
+        .then(() => {
+          router.push("/me");
+        });
     } catch (error: any) {
-      const errors = error?.payload?.errors as {
-        field: keyof TLoginSchema;
+      const errors = error.payload.errors as {
+        field: string;
         message: string;
       }[];
       const status = error.status as number;
       if (status === 422) {
         errors.forEach((error) => {
-          loginForm.setError(error.field, {
+          loginForm.setError(error.field as "email" | "password", {
             type: "server",
             message: error.message,
           });
         });
       } else {
         toast({
-          title: "Đã có lỗi xảy ra",
-          description: "Vui lòng thử lại sau",
+          title: "Lỗi",
+          description: error.payload.message,
           variant: "destructive",
         });
       }

@@ -8,6 +8,7 @@ import NavigationBar from "src/components/navigation-bar";
 import { Toaster } from "src/components/ui/toaster";
 import AuthProvider from "src/app/AuthProvider";
 import { cookies } from "next/headers";
+import { clientSessionToken } from "src/lib/http";
 
 const roboto = Roboto({
   subsets: ["vietnamese"],

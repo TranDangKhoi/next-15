@@ -42,7 +42,8 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// If any paths are included in the matcher, it will invoke the middleware; otherwise, it will not.
+// If any paths are included in the matcher, it will invoke the middleware. Other than that, it will not.
 export const config = {
-  matcher: [...authRequiredPaths],
+  // This will match all routes except for the ones listed in the regex
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };

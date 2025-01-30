@@ -1,6 +1,8 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { FieldErrors, useForm } from "react-hook-form";
+import authApiRequest from "src/app/api/auth/requests";
 import { Button } from "src/components/ui/button";
 import {
   Form,
@@ -11,9 +13,9 @@ import {
   FormMessage,
 } from "src/components/ui/form";
 import { Input } from "src/components/ui/input";
-import parsedEnvData from "src/config";
 import { TRegisterSchema, registerSchema } from "src/schemas/register.schema";
 export default function RegisterForm() {
+  const router = useRouter();
   const registerForm = useForm<TRegisterSchema>({
     resolver: zodResolver(registerSchema),
     mode: "onSubmit",
@@ -25,27 +27,9 @@ export default function RegisterForm() {
     },
   });
   async function onSubmit(values: TRegisterSchema) {
-    const result = await fetch(
-      `${parsedEnvData.NEXT_PUBLIC_API_ENDPOINT}/auth/register`,
-      {
-        method: "POST",
-        body: JSON.stringify(values),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    ).then(async (res) => {
-      const payload = await res.json();
-      const data = {
-        status: res.status,
-        payload,
-      };
-      if (!res.ok) {
-        throw data;
-      }
-      return data;
+    const result = await authApiRequest.register(values).then(() => {
+      router.push("/me");
     });
-    console.log(result);
   }
 
   function onErrors(errors: FieldErrors<TRegisterSchema>) {
