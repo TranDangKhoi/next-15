@@ -15,6 +15,7 @@ import {
 } from "src/components/ui/form";
 import { Input } from "src/components/ui/input";
 import { useToast } from "src/components/ui/use-toast";
+import { handleErrorApi } from "src/lib/utils";
 import { TLoginSchema, loginSchema } from "src/schemas/login.schema";
 export default function LoginForm() {
   const { toast } = useToast();
@@ -43,25 +44,7 @@ export default function LoginForm() {
           router.push("/me");
         });
     } catch (error: any) {
-      const errors = error.payload.errors as {
-        field: string;
-        message: string;
-      }[];
-      const status = error.status as number;
-      if (status === 422) {
-        errors.forEach((error) => {
-          loginForm.setError(error.field as "email" | "password", {
-            type: "server",
-            message: error.message,
-          });
-        });
-      } else {
-        toast({
-          title: "Lỗi",
-          description: error.payload.message,
-          variant: "destructive",
-        });
-      }
+      handleErrorApi({ error, duration: 3000, setError: loginForm.setError });
     }
   }
   function onErrors(errors: FieldErrors<TLoginSchema>) {
