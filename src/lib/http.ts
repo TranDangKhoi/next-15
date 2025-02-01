@@ -13,11 +13,11 @@ type CustomOptions<TBody = unknown> = Omit<RequestInit, "method"> & {
 
 // Lớp `HttpError` kế thừa từ `Error` để tạo ra các lỗi HTTP tùy chỉnh.
 // Lớp này bao gồm mã trạng thái HTTP (`status`) và dữ liệu bổ sung (`payload`).
-class HttpError extends Error {
+export class HttpError extends Error {
   status: number;
   payload: any;
   constructor({ status, payload }: { status: number; payload: any }) {
-    super("Http Error");
+    super("HttpError");
     this.status = status;
     this.payload = payload;
   }
@@ -34,7 +34,7 @@ type UnprocessableEntityErrorPayload = {
 
 // Lớp `EntityError` kế thừa từ `HttpError` để đại diện cho lỗi 422 (Unprocessable Entity).
 // Lỗi này thường xảy ra khi dữ liệu gửi lên server không hợp lệ.
-export class EntityError extends HttpError {
+export class UnprocessableEntityError extends HttpError {
   status: 422;
   payload: UnprocessableEntityErrorPayload;
   constructor({
@@ -58,7 +58,7 @@ class SessionToken {
     return this.token;
   }
   set value(token: string) {
-    // Nếu gọi method này ở phía Next Server (không có `window`), sẽ ném ra lỗi.
+    // Nếu gọi method này ở server thì sẽ bị lỗi
     if (typeof window === "undefined") {
       throw new Error("Cannot set token on server side");
     }
@@ -119,7 +119,7 @@ const request = async <TResponse, TBody = unknown>(
   if (!res.ok) {
     if (res.status === HTTP_STATUS_CODE.UNPROCESSABLE_ENTITY) {
       // Nếu lỗi là 422 (Unprocessable Entity), ném ra `EntityError`.
-      throw new EntityError(
+      throw new UnprocessableEntityError(
         data as {
           status: 422;
           payload: UnprocessableEntityErrorPayload;
@@ -133,7 +133,7 @@ const request = async <TResponse, TBody = unknown>(
 
   // Cập nhật token phiên đăng nhập nếu yêu cầu liên quan đến đăng nhập/đăng ký.
   // Đảm bảo logic ở trong `if` chỉ chạy ở phía browser (client)
-  if (typeof window !== undefined) {
+  if (typeof window !== "undefined") {
     if (["/auth/login", "/auth/register"].some((path) => path === url)) {
       console.log(url);
       clientSessionToken.value = (payload as ILoginResponse).data.token;

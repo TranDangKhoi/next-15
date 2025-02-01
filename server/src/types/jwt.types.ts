@@ -1,10 +1,10 @@
-import { TokenType } from "@/constants/type";
+import { TokenType } from '@/constants/type'
 
-export type TokenTypeValue = (typeof TokenType)[keyof typeof TokenType];
+export type TokenTypeValue = (typeof TokenType)[keyof typeof TokenType]
 
 export interface TokenPayload {
-  userId: number;
-  tokenType: TokenTypeValue;
-  exp: number;
-  iat: number;
+  userId: number
+  tokenType: TokenTypeValue
+  exp: number
+  iat: number
 }

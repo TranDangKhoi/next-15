@@ -1,5 +1,7 @@
 import Link from "next/link";
+import ButtonLogout from "src/components/button-logout";
 import ThemeToggle from "src/components/theme-toggle";
+import { clientSessionToken } from "src/lib/http";
 
 export default function NavigationBar() {
   return (
@@ -10,6 +12,9 @@ export default function NavigationBar() {
         </li>
         <li>
           <Link href="/login">Đăng nhập</Link>
+        </li>
+        <li>
+          <ButtonLogout></ButtonLogout>
         </li>
       </ul>
       <ThemeToggle></ThemeToggle>

@@ -13,3 +13,7 @@ export interface IRegisterResponse {
 }
 
 export interface ILoginResponse extends IRegisterResponse {}
+
+export interface IMessageResponse {
+  message: string;
+}

@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { UseFormSetError } from "react-hook-form";
 import { toast } from "src/components/ui/use-toast";
-import { EntityError } from "src/lib/http";
+import { UnprocessableEntityError } from "src/lib/http";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -17,7 +17,7 @@ export const handleErrorApi = ({
   setError?: UseFormSetError<any>;
   duration?: number;
 }) => {
-  if (error instanceof EntityError && setError) {
+  if (error instanceof UnprocessableEntityError && setError) {
     error.payload.errors.forEach((item) => {
       setError(item.field, {
         type: "server",

@@ -35,6 +35,7 @@ export default function LoginForm() {
         title: "Đăng nhập thành công",
         description:
           "Vui lòng đợi trong giây lát, chúng tôi đang xử lí yêu cầu của bạn",
+        duration: 2000,
       });
       const resultFromNextServer = await authApiRequest
         .setToken({
