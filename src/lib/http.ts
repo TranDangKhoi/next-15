@@ -32,8 +32,8 @@ type UnprocessableEntityErrorPayload = {
   }[];
 };
 
-// Lớp `EntityError` kế thừa từ `HttpError` để đại diện cho lỗi 422 (Unprocessable Entity).
-// Lỗi này thường xảy ra khi dữ liệu gửi lên server không hợp lệ.
+// Lớp `UnprocessableEntityError` kế thừa từ `HttpError` để đại diện cho lỗi 422 (Unprocessable Entity).
+// Lỗi này thường liên quan tới forms và xảy ra khi dữ liệu gửi lên server không hợp lệ.
 export class UnprocessableEntityError extends HttpError {
   status: 422;
   payload: UnprocessableEntityErrorPayload;
@@ -43,6 +43,30 @@ export class UnprocessableEntityError extends HttpError {
   }: {
     status: 422;
     payload: UnprocessableEntityErrorPayload;
+  }) {
+    super({ status, payload });
+    this.status = status;
+    this.payload = payload;
+  }
+}
+
+export type UnauthorizedErrorPayload = {
+  message: string;
+  errors: {
+    field: string;
+    message: string;
+  }[];
+};
+
+export class UnauthorizedError extends HttpError {
+  status: 401;
+  payload: UnauthorizedErrorPayload;
+  constructor({
+    status,
+    payload,
+  }: {
+    status: 401;
+    payload: UnauthorizedErrorPayload;
   }) {
     super({ status, payload });
     this.status = status;
@@ -124,6 +148,21 @@ const request = async <TResponse, TBody = unknown>(
           payload: UnprocessableEntityErrorPayload;
         }
       );
+    } else if (res.status === HTTP_STATUS_CODE.UNAUTHORIZED) {
+      if (typeof window !== "undefined") {
+        await fetch("/api/auth/logout", {
+          method: "POST",
+          body: JSON.stringify({ forcedToLogout: true }),
+          headers: {
+            ...baseHeaders,
+          },
+        }).then((res) => {
+          if (res.ok) {
+            clientSessionToken.value = "";
+            location.href = "/login";
+          }
+        });
+      }
     } else {
       // Nếu là lỗi khác, ném ra `HttpError`.
       throw new HttpError(data);
@@ -134,7 +173,6 @@ const request = async <TResponse, TBody = unknown>(
   // Đảm bảo logic ở trong `if` chỉ chạy ở phía browser (client)
   if (typeof window !== "undefined") {
     if (["/auth/login", "/auth/register"].some((path) => path === url)) {
-      console.log(url);
       clientSessionToken.value = (payload as ILoginResponse).data.token;
     } else if ("/auth/logout".includes(url)) {
       // Xóa token nếu yêu cầu là đăng xuất.

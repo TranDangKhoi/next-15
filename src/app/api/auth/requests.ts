@@ -1,6 +1,5 @@
 import {
   IAccount,
-  ILoginResponse,
   IMessageResponse,
   IRegisterResponse,
 } from "src/interfaces/api/auth.interfaces";
@@ -35,7 +34,8 @@ const authApiRequest = {
     http.post("/api/auth", body, {
       baseUrl: "",
     }),
-  getProfile: (sessionToken: string) =>
+  getProfile: () => http.get<IApiResponse<IAccount>>("/account/me"),
+  nextGetProfile: (sessionToken: string) =>
     http.get<IApiResponse<IAccount>>("/account/me", {
       headers: {
         Authorization: `Bearer ${sessionToken}`,
