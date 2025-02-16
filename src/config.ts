@@ -1,12 +1,5 @@
 // Chúng ta có thể sử dụng zod để validate các giá trị trong file env
-
-import { z } from "zod";
-const envSchema = z.object({
-  NEXT_PUBLIC_API_ENDPOINT: z.string(),
-  NEXT_PUBLIC_COOKIE_MODE: z
-    .enum(["true", "false"])
-    .transform((val) => val === "true"),
-});
+import { envSchema } from "src/validations/env.validations";
 
 const parsedEnvConfig = envSchema.safeParse({
   NEXT_PUBLIC_API_ENDPOINT: process.env.NEXT_PUBLIC_API_ENDPOINT,

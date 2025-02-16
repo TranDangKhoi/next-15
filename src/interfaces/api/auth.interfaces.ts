@@ -12,6 +12,7 @@ export interface IRegisterResponse {
   message: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ILoginResponse extends IRegisterResponse {}
 
 export interface IMessageResponse {

@@ -1,12 +1,12 @@
-import React from "react";
 import type { Metadata } from "next";
+import React from "react";
 
 export const metadata: Metadata = {
-  title: "Login",
-  description: "Login page",
+  title: "Your profile",
+  description: "Overview of yourself",
 };
 
-export default function LoginLayout({
+export default function ProfileLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return <div>{children}</div>;
