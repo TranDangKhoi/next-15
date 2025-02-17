@@ -12,7 +12,7 @@ const authApiRequest = {
     http.post<IRegisterResponse, TLoginSchema>("/auth/login", body),
   //   register: (body: TRegisterSchema) =>
   //     http.post<IRegisterResponse, TLoginSchema>("/auth/register", body),
-  logout: (body: { sessionToken: string }) =>
+  logout: (body: { sessionToken: string }, signal?: AbortSignal) =>
     http.post<IMessageResponse, null>(
       "/auth/logout",
       {},
@@ -20,14 +20,16 @@ const authApiRequest = {
         headers: {
           Authorization: `Bearer ${body.sessionToken}`,
         },
+        signal,
       }
     ),
-  nextLogout: () =>
+  nextLogout: (forcedToLogout: boolean, signal?: AbortSignal) =>
     http.post<IMessageResponse, null>(
       "/api/auth/logout",
-      {},
+      { forcedToLogout },
       {
         baseUrl: "",
+        signal,
       }
     ),
   nextSetToken: (body: { sessionToken: string }) =>

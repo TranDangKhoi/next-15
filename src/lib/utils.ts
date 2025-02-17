@@ -1,10 +1,10 @@
 import { clsx, type ClassValue } from "clsx";
+import { jwtDecode } from "jwt-decode";
 import React from "react";
 import { UseFormSetError } from "react-hook-form";
 import { toast } from "react-toastify";
 import { UnprocessableEntityError } from "src/lib/http";
 import { twMerge } from "tailwind-merge";
-
 /**
  * This function is used to merge the className of the component
  * @param inputs
@@ -65,4 +65,10 @@ export function handleApiErrorResponse({
       }
     );
   }
+}
+
+export function decodeJwt(token: string) {
+  const decodedToken = jwtDecode(token);
+  const payload = decodedToken;
+  return payload;
 }

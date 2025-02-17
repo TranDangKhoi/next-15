@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import parsedEnvData from "src/config";
 import { HTTP_STATUS_CODE } from "src/constants/httpStatusCode.constants";
 import { ILoginResponse } from "src/interfaces/api/auth.interfaces";
@@ -162,6 +163,11 @@ const request = async <TResponse, TBody = unknown>(
             location.href = "/login";
           }
         });
+      } else {
+        const sessionToken = (options?.headers as any).Authorization.split(
+          " "
+        )[1];
+        redirect(`/logout?sessionToken=${sessionToken}`);
       }
     } else {
       // Nếu là lỗi khác, ném ra `HttpError`.

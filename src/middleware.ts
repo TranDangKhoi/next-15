@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 const publicPaths = ["/login", "/signup"];
-const authRequiredPaths = ["/profile"];
+const authRequiredPaths = ["/profile", "/logout"];
 
 export const middleware = async (request: NextRequest) => {
   const { pathname } = request.nextUrl;
