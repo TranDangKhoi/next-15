@@ -32,10 +32,11 @@ export default async function RootLayout({
   const sessionToken = cookieStore.get("sessionToken")?.value as string;
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html
+      lang="en"
+      suppressHydrationWarning
+    >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -45,12 +46,13 @@ export default async function RootLayout({
           <AuthProvider initialSessionToken={sessionToken}>
             <SidebarProvider defaultOpen={defaultOpen}>
               <AppSidebar></AppSidebar>
-              <main className="w-full">
-                <SidebarTrigger></SidebarTrigger>
-                {children}
-              </main>
+              <main className="w-full">{children}</main>
             </SidebarProvider>
-            <ToastContainer className="toast-custom" stacked hideProgressBar />
+            <ToastContainer
+              className="toast-custom"
+              stacked
+              hideProgressBar
+            />
           </AuthProvider>
         </ThemeProvider>
       </body>

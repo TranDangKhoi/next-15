@@ -1,4 +1,4 @@
-import { Home, LogIn, LogOut, UserPlus } from "lucide-react";
+import { Home, LogIn, LogOut, User2, UserPlus } from "lucide-react";
 import Link from "next/link";
 import LogoutButton from "src/components/manual/logout-button";
 
@@ -11,6 +11,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
 } from "src/components/ui/sidebar";
 import { ThemeToggle } from "src/components/ui/theme-toggle";
 
@@ -32,6 +33,11 @@ const items = [
     icon: UserPlus,
   },
   {
+    title: "Profile",
+    url: "/profile",
+    icon: User2,
+  },
+  {
     title: "Logout",
     url: "/logout",
     icon: LogOut,
@@ -45,6 +51,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>NextJS 15</SidebarGroupLabel>
+          <SidebarTrigger></SidebarTrigger>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) =>

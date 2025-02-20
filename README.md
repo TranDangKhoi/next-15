@@ -1,3 +1,6 @@
+Đây là một project Next.js đơn giản dùng để luyện tập các thư viện hay, bạn có thể xem project Next.js loại xịn hơn ở đây:
+_TBA_
+
 ## ShadcnUI
 
 Đây là một thư viện khá hay, thoạt đầu nhìn vào thì tưởng rằng nó sẽ là các cái styled component:
@@ -215,8 +218,7 @@ export const config = {
   matcher: ["/profile"],
 };
 export function middleware(request: NextRequest) {
-  const isLoggedIn =
-    (request.cookies.get("isLoggedIn")?.value as string | undefined) === "true";
+  const isLoggedIn = (request.cookies.get("isLoggedIn")?.value as string | undefined) === "true";
   if (!isLoggedIn) return new Response("Chưa đăng nhập", { status: 401 });
 }
 ```
