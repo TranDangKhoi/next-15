@@ -10,6 +10,10 @@ VÀ VÌ LÝ DO TRÊN NÊN TA PHẢI THÊM LƯU Ý NỮA: Đó chính là `proces
 const myNextEnvinronmentVariables = process.env;
 
 // ✅ Right way (this will return the value of that env variable):
-"use client";
+("use client");
 const myNextPublicAPI = process.env.NEXT_PUBLIC_API;
 ```
+
+## 2. Tính năng thử nghiệm use cache
+
+Mặc định khi ta gọi "use cache" ở đầu file hoặc ở đầu mỗi function thì mặc định function đó sẽ chạy ở phía Server

@@ -52,17 +52,13 @@ export function handleApiErrorResponse({
         "div",
         null,
         React.createElement("strong", null, defaultMessage),
-        React.createElement(
-          "p",
-          { className: "text-sm text-gray-500" },
-          "Vui lòng thử lại sau"
-        )
+        React.createElement("p", { className: "text-sm text-gray-500" }, "Vui lòng thử lại sau"),
       ),
       {
         ariaLabel: "Đã có lỗi xảy ra",
         autoClose: duration,
         className: "toast-custom",
-      }
+      },
     );
   }
 }

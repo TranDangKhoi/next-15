@@ -9,13 +9,11 @@ export async function POST(request: Request) {
       { message: "Không nhận được session token" },
       {
         status: 400,
-      }
+      },
     );
   }
   const decodedSessionToken = decodeJwt(sessionToken);
-  const expiresDate = new Date(
-    (decodedSessionToken.exp as number) * 1000
-  ).toUTCString();
+  const expiresDate = new Date((decodedSessionToken.exp as number) * 1000).toUTCString();
   return new Response(JSON.stringify({ sessionToken }), {
     status: 200,
     headers: {

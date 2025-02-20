@@ -63,7 +63,7 @@ export function AppSidebar() {
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                )
+                ),
               )}
               <SidebarMenuItem>
                 <ThemeToggle></ThemeToggle>
