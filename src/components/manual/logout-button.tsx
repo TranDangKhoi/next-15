@@ -12,9 +12,10 @@ export default function LogoutButton({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const abortController = new AbortController();
   const handleLogout = async () => {
     try {
-      await authApiRequest.nextLogout().then((res) => {
+      await authApiRequest.nextLogout(true, abortController.signal).then(() => {
         router.push("/login");
       });
     } catch (err) {
@@ -24,9 +25,9 @@ export default function LogoutButton({
     }
   };
   return (
-    <Button className="w-full" onClick={handleLogout}>
-      <LogOut />
-      {children}
+    <Button className="w-full flex items-center justify-center" onClick={handleLogout}>
+      <LogOut className="shrink-0"/>
+      <span className="truncate group-data-[state=collapsed]:hidden">{children}</span>
     </Button>
   );
 }

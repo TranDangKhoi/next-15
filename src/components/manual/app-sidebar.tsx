@@ -1,7 +1,6 @@
 import { Home, LogIn, LogOut, UserPlus } from "lucide-react";
 import Link from "next/link";
 import LogoutButton from "src/components/manual/logout-button";
-import { Button } from "src/components/ui/button";
 
 import {
   Sidebar,
