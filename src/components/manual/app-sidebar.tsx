@@ -1,4 +1,4 @@
-import { Home, LogIn, LogOut, User2, UserPlus } from "lucide-react";
+import { Home, LogIn, LogOut, User2, UserPlus, BadgePlus } from "lucide-react";
 import Link from "next/link";
 import LogoutButton from "src/components/manual/logout-button";
 
@@ -36,6 +36,11 @@ const items = [
     title: "Profile",
     url: "/profile",
     icon: User2,
+  },
+  {
+    title: "Add new products",
+    url: "/products/add",
+    icon: BadgePlus,
   },
   {
     title: "Logout",

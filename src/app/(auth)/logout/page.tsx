@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import authApiRequest from "src/api/auth/requests";
+import authApiRequest from "src/app/api/auth/requests";
 import { clientSessionToken } from "src/lib/http";
 
 export default function LogoutPage() {

@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import authApiRequest from "src/api/auth/requests";
+import authApiRequest from "src/app/api/auth/requests";
 
 export async function POST(request: Request) {
   const res = await request.json();

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import authApiRequest from "src/api/auth/requests";
+import authApiRequest from "src/app/api/auth/requests";
 
 export default function ProfileWelcome({ name }: { name: string }) {
   useEffect(() => {

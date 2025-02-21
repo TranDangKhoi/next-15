@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import authApiRequest from "src/api/auth/requests";
+import authApiRequest from "src/app/api/auth/requests";
 import { Button } from "src/components/ui/button";
 import {
   Form,

@@ -10,7 +10,6 @@ export function useIsMobile() {
     const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
     const handleChange = debounce((e: MediaQueryListEvent | MediaQueryList) => {
       setIsMobile(e.matches);
-      console.log(e.matches);
     }, 200);
 
     // Initial check
