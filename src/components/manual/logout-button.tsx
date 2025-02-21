@@ -2,7 +2,7 @@
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
-import authApiRequest from "src/app/api/auth/requests";
+import authApiRequest from "src/api/auth/requests";
 import { Button } from "src/components/ui/button";
 import { handleApiErrorResponse } from "src/lib/utils";
 

@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import React from "react";
+import authApiRequest from "src/api/auth/requests";
 import ProfileWelcome from "src/app/(auth)/profile/profile-welcome";
 import UpdateProfileForm from "src/app/(auth)/profile/update-profile-form";
-import authApiRequest from "src/app/api/auth/requests";
 
 export default async function ProfilePage() {
   const cookieStore = await cookies();

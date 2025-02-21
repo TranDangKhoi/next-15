@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import authApiRequest from "src/app/api/auth/requests";
+import authApiRequest from "src/api/auth/requests";
 
 export async function POST(request: Request) {
   const res = await request.json();
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
         headers: {
           "Set-Cookie": `sessionToken=; Path=/; HttpOnly; Max-Age=0`,
         },
-      }
+      },
     );
   }
   const cookieStore = await cookies();
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       { message: "Không nhận được session token" },
       {
         status: 400,
-      }
+      },
     );
   }
 
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
       { message: (err as Error).message },
       {
         status: 400,
-      }
+      },
     );
   }
 }

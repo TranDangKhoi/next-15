@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import authApiRequest from "src/app/api/auth/requests";
+import authApiRequest from "src/api/auth/requests";
 import { Button } from "src/components/ui/button";
 import {
   Form,
@@ -109,14 +109,17 @@ export default function LoginForm() {
                 />
               </FormControl>
               <FormDescription>
-                Password must contain at least one uppercase letter, one
-                lowercase letter, one number, and one special character.
+                Password must contain at least one uppercase letter, one lowercase letter, one number, and one special
+                character.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button className="w-full mt-8" type="submit">
+        <Button
+          className="w-full mt-8"
+          type="submit"
+        >
           Login
         </Button>
       </form>

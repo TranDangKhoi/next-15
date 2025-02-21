@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import authApiRequest from "src/app/api/auth/requests";
+import authApiRequest from "src/api/auth/requests";
 import { clientSessionToken } from "src/lib/http";
 
 export default function LogoutPage() {
@@ -13,11 +13,9 @@ export default function LogoutPage() {
   useEffect(() => {
     (async () => {
       if (sessionToken && sessionToken === clientSessionToken.value) {
-        await authApiRequest
-          .nextLogout(true, abortController.signal)
-          .then(() => {
-            router.replace("/login");
-          });
+        await authApiRequest.nextLogout(true, abortController.signal).then(() => {
+          router.replace("/login");
+        });
       }
     })();
   }, [abortController.signal, router, sessionToken]);

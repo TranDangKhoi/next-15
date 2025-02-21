@@ -42,6 +42,8 @@ export const middleware = async (request: NextRequest) => {
   return NextResponse.next();
 };
 
+// This is a Next.js configuration object that specifies the matcher for the middleware.
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  // This matcher will match all paths except for the ones starting with: api, _next/static, _next/image, favicon.ico, sitemap.xml, robots.txt
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)"],
 };

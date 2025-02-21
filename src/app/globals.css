@@ -133,6 +133,7 @@ body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
     border: 1px solid hsl(var(--border));
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   /* Toast trong Dark mode */
@@ -140,11 +141,13 @@ body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
     border: 1px solid hsl(var(--border));
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   .toast-custom .Toastify__toast-theme--light {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   .dark .toast-custom .Toastify__close-button--light {

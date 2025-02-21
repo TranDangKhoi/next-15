@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import authApiRequest from "src/app/api/auth/requests";
+import authApiRequest from "src/api/auth/requests";
 import { Button } from "src/components/ui/button";
 import {
   Form,
@@ -16,7 +16,7 @@ import {
 } from "src/components/ui/form";
 import { Input } from "src/components/ui/input";
 import { handleApiErrorResponse } from "src/lib/utils";
-import { TUpdateProfileSchema, updateProfileSchema } from "src/validations/update-profile.validations";
+import { TUpdateProfileSchema, updateProfileSchema } from "src/validations/profile.validations";
 
 export default function UpdateProfileForm() {
   const router = useRouter();
