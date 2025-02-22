@@ -3,7 +3,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { ControllerRenderProps, FieldValues, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { mediaApiRequest } from "src/app/api/media/requests";
+import { productsApiRequest } from "src/app/api/products/requests";
 import { Button } from "src/components/ui/button";
 import {
   Form,
@@ -16,6 +19,7 @@ import {
 } from "src/components/ui/form";
 import { Input } from "src/components/ui/input";
 import { Textarea } from "src/components/ui/textarea";
+import { handleApiErrorResponse } from "src/lib/utils";
 import { addProductSchema, TAddProductSchema } from "src/validations/products.validation";
 
 export default function AddProductsForm() {
@@ -28,13 +32,96 @@ export default function AddProductsForm() {
     defaultValues: {
       name: "",
       description: "",
-      price: "",
+      price: 0,
       image: "",
     },
   });
-  console.log(addProductsForm.getValues("image"));
+
+  const handlePriceChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: ControllerRenderProps<FieldValues, string>,
+  ) => {
+    const input = e.target;
+    const value = input.value;
+    const cursorPosition = input.selectionStart || 0;
+
+    // Remove the suffix and commas to get clean input
+    const cleanValue = value.replace(/[, ₫]/g, "");
+
+    // If backspace was used and resulted in empty string, reset the field
+    if (!cleanValue) {
+      field.onChange(0);
+      input.value = "";
+      return;
+    }
+
+    // Only proceed if the remaining value contains valid numbers
+    if (/^\d+$/.test(cleanValue)) {
+      // Add commas for thousands
+      const formattedValue = cleanValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      // Add "₫" suffix
+      const valueWithSuffix = `${formattedValue} ₫`;
+
+      // Set the actual numeric value in the form
+      field.onChange(Number(cleanValue));
+
+      // Set the display value
+      input.value = valueWithSuffix;
+
+      // Calculate new cursor position accounting for added commas
+      const commasBeforeCursor = (value.slice(0, cursorPosition).match(/,/g) || []).length;
+      const newCommasBeforeCursor = (formattedValue.slice(0, cursorPosition).match(/,/g) || []).length;
+      const cursorOffset = newCommasBeforeCursor - commasBeforeCursor;
+
+      // Ensure cursor doesn't go beyond the number part
+      const maxPosition = formattedValue.length;
+      const newPosition = Math.min(cursorPosition + cursorOffset, maxPosition);
+
+      // Use requestAnimationFrame for smoother updates
+      requestAnimationFrame(() => {
+        if (document.activeElement === input) {
+          input.setSelectionRange(newPosition, newPosition);
+        }
+      });
+    } else {
+      // Keep the current value and cursor position for invalid input
+      requestAnimationFrame(() => {
+        if (document.activeElement === input) {
+          input.setSelectionRange(cursorPosition, cursorPosition);
+        }
+      });
+    }
+  };
+
   const handleAddProduct = addProductsForm.handleSubmit(async (data) => {
-    console.log(data);
+    let uploadImageResponse = null;
+    if (previewImageFile) {
+      const formData = new FormData();
+      formData.append("image", previewImageFile);
+      try {
+        uploadImageResponse = await mediaApiRequest.uploadImage(formData);
+      } catch (error) {
+        handleApiErrorResponse({
+          error,
+        });
+      }
+    }
+
+    try {
+      await productsApiRequest.addProduct({
+        name: data.name,
+        description: data.description,
+        price: Number(data.price),
+        image: uploadImageResponse?.payload.data,
+      });
+      toast.success("Add product successfully");
+      addProductsForm.reset();
+      setPreviewImageFile(undefined);
+    } catch (error) {
+      handleApiErrorResponse({
+        error,
+      });
+    }
   });
 
   return (
@@ -90,53 +177,7 @@ export default function AddProductsForm() {
                   placeholder="Enter product's price"
                   {...field}
                   value={field.value}
-                  onChange={(e) => {
-                    const input = e.target;
-                    const value = input.value;
-                    const cursorPosition = input.selectionStart || 0;
-
-                    // Remove the suffix and commas to get clean input
-                    const cleanValue = value.replace(/[, ₫]/g, "");
-
-                    // If backspace was used and resulted in empty string, reset the field
-                    if (!cleanValue) {
-                      field.onChange("");
-                      return;
-                    }
-
-                    // Only proceed if the remaining value contains valid numbers
-                    if (/^\d+$/.test(cleanValue)) {
-                      // Add commas for thousands
-                      const formattedValue = cleanValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                      // Add "₫" suffix
-                      const valueWithSuffix = `${formattedValue} ₫`;
-
-                      // Calculate new cursor position accounting for added commas
-                      const commasBeforeCursor = (value.slice(0, cursorPosition).match(/,/g) || []).length;
-                      const newCommasBeforeCursor = (formattedValue.slice(0, cursorPosition).match(/,/g) || []).length;
-                      const cursorOffset = newCommasBeforeCursor - commasBeforeCursor;
-
-                      // Ensure cursor doesn't go beyond the number part
-                      const maxPosition = formattedValue.length;
-                      const newPosition = Math.min(cursorPosition + cursorOffset, maxPosition);
-
-                      field.onChange(valueWithSuffix);
-
-                      // Use requestAnimationFrame for smoother updates
-                      requestAnimationFrame(() => {
-                        if (document.activeElement === input) {
-                          input.setSelectionRange(newPosition, newPosition);
-                        }
-                      });
-                    } else {
-                      // Keep the current value and cursor position for invalid input
-                      requestAnimationFrame(() => {
-                        if (document.activeElement === input) {
-                          input.setSelectionRange(cursorPosition, cursorPosition);
-                        }
-                      });
-                    }
-                  }}
+                  onChange={(e) => handlePriceChange(e, field as ControllerRenderProps<any, "price">)}
                 />
               </FormControl>
               <FormDescription>This is the price for your product (Vietnamese Dong).</FormDescription>
@@ -155,11 +196,10 @@ export default function AddProductsForm() {
                   type="file"
                   {...field}
                   onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      setPreviewImageFile(file);
+                    const fileFromLocalComputer = e.target.files?.[0];
+                    if (fileFromLocalComputer) {
+                      setPreviewImageFile(fileFromLocalComputer);
                     }
-                    field.onChange(file);
                   }}
                 />
               </FormControl>

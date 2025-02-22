@@ -38,13 +38,7 @@ type UnprocessableEntityErrorPayload = {
 export class UnprocessableEntityError extends HttpError {
   status: 422;
   payload: UnprocessableEntityErrorPayload;
-  constructor({
-    status,
-    payload,
-  }: {
-    status: 422;
-    payload: UnprocessableEntityErrorPayload;
-  }) {
+  constructor({ status, payload }: { status: 422; payload: UnprocessableEntityErrorPayload }) {
     super({ status, payload });
     this.status = status;
     this.payload = payload;
@@ -62,13 +56,7 @@ export type UnauthorizedErrorPayload = {
 export class UnauthorizedError extends HttpError {
   status: 401;
   payload: UnauthorizedErrorPayload;
-  constructor({
-    status,
-    payload,
-  }: {
-    status: 401;
-    payload: UnauthorizedErrorPayload;
-  }) {
+  constructor({ status, payload }: { status: 401; payload: UnauthorizedErrorPayload }) {
     super({ status, payload });
     this.status = status;
     this.payload = payload;
@@ -99,17 +87,15 @@ export const clientSessionToken = new SessionToken();
 const request = async <TResponse, TBody = unknown>(
   method: "GET" | "POST" | "PUT" | "DELETE",
   url: string,
-  options?: CustomOptions<TBody>
+  options?: CustomOptions<TBody>,
 ) => {
   // Chuyển đổi body thành chuỗi JSON nếu có.
-  const body = options?.body ? JSON.stringify(options.body) : undefined;
+  const body = options?.body instanceof FormData ? options?.body : JSON.stringify(options?.body);
 
   // Các header mặc định cho mọi yêu cầu.
   const baseHeaders = {
-    "Content-Type": "application/json",
-    Authorization: clientSessionToken.value
-      ? `Bearer ${clientSessionToken.value}`
-      : "",
+    ...(!(options?.body instanceof FormData) && { "Content-Type": "application/json" }),
+    Authorization: clientSessionToken.value ? `Bearer ${clientSessionToken.value}` : "",
   };
 
   // Xác định baseUrl dựa trên giá trị truyền vào hoặc lấy từ cấu hình môi trường.
@@ -117,9 +103,7 @@ const request = async <TResponse, TBody = unknown>(
   // ngược lại thì sử dụng baseUrl của server (ví dụ: localhost:4000).
   const baseUrl = options?.baseUrl ?? parsedEnvData.NEXT_PUBLIC_API_ENDPOINT;
   // Tạo URL đầy đủ bằng cách kết hợp baseUrl và đường dẫn tương đối.
-  const fullUrl = url.startsWith("/")
-    ? `${baseUrl}${url}`
-    : `${baseUrl}/${url}`;
+  const fullUrl = url.startsWith("/") ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
 
   // Thực hiện yêu cầu HTTP bằng `fetch`.
   const res = await fetch(fullUrl, {
@@ -147,7 +131,7 @@ const request = async <TResponse, TBody = unknown>(
         data as {
           status: 422;
           payload: UnprocessableEntityErrorPayload;
-        }
+        },
       );
     } else if (res.status === HTTP_STATUS_CODE.UNAUTHORIZED) {
       if (typeof window !== "undefined") {
@@ -164,9 +148,7 @@ const request = async <TResponse, TBody = unknown>(
           }
         });
       } else {
-        const sessionToken = (options?.headers as any).Authorization.split(
-          " "
-        )[1];
+        const sessionToken = (options?.headers as any).Authorization.split(" ")[1];
         redirect(`/logout?sessionToken=${sessionToken}`);
       }
     } else {
@@ -192,31 +174,16 @@ const request = async <TResponse, TBody = unknown>(
 
 // Đối tượng `http` cung cấp các phương thức tiện ích để thực hiện yêu cầu HTTP.
 const http = {
-  get<Response>(
-    url: string,
-    options?: Omit<CustomOptions, "body"> | undefined
-  ) {
+  get<Response>(url: string, options?: Omit<CustomOptions, "body"> | undefined) {
     return request<Response>("GET", url, options);
   },
-  post<Response, TBody>(
-    url: string,
-    body: any,
-    options?: Omit<CustomOptions<TBody>, "body"> | undefined
-  ) {
+  post<Response, TBody>(url: string, body: any, options?: Omit<CustomOptions<TBody>, "body"> | undefined) {
     return request<Response>("POST", url, { ...options, body });
   },
-  put<Response, TBody>(
-    url: string,
-    body: any,
-    options?: Omit<CustomOptions<TBody>, "body"> | undefined
-  ) {
+  put<Response, TBody>(url: string, body: any, options?: Omit<CustomOptions<TBody>, "body"> | undefined) {
     return request<Response>("PUT", url, { ...options, body });
   },
-  delete<Response>(
-    url: string,
-    body: any,
-    options?: Omit<CustomOptions, "body"> | undefined
-  ) {
+  delete<Response>(url: string, body: any, options?: Omit<CustomOptions, "body"> | undefined) {
     return request<Response>("DELETE", url, { ...options, body });
   },
 };

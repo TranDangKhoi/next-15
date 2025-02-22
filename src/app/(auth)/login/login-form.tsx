@@ -18,13 +18,11 @@ import {
 import { Input } from "src/components/ui/input";
 import { HTTP_STATUS_CODE } from "src/constants/httpStatusCode.constants";
 import { AuthContext } from "src/contexts/auth.contexts";
-import { clientSessionToken } from "src/lib/http";
 import { handleApiErrorResponse } from "src/lib/utils";
 import { loginSchema, TLoginSchema } from "src/validations/login.validations";
 
 export default function LoginForm() {
   const { setUserProfile } = useContext(AuthContext);
-  console.log(clientSessionToken.value);
   const router = useRouter();
   const loginForm = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),

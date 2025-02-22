@@ -1,4 +1,4 @@
-import { Home, LogIn, LogOut, User2, UserPlus, BadgePlus } from "lucide-react";
+import { BadgePlus, Bean, Home, LogIn, LogOut, User2, UserPlus } from "lucide-react";
 import Link from "next/link";
 import LogoutButton from "src/components/manual/logout-button";
 
@@ -14,6 +14,7 @@ import {
   SidebarTrigger,
 } from "src/components/ui/sidebar";
 import { ThemeToggle } from "src/components/ui/theme-toggle";
+import { clientSessionToken } from "src/lib/http";
 
 // Menu items.
 const items = [
@@ -36,6 +37,11 @@ const items = [
     title: "Profile",
     url: "/profile",
     icon: User2,
+  },
+  {
+    title: "Products",
+    url: "/products",
+    icon: Bean,
   },
   {
     title: "Add new products",
