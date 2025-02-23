@@ -1,4 +1,5 @@
 import { BadgePlus, Bean, Home, LogIn, LogOut, User2, UserPlus } from "lucide-react";
+import { cookies } from "next/headers";
 import Link from "next/link";
 import LogoutButton from "src/components/manual/logout-button";
 
@@ -14,7 +15,6 @@ import {
   SidebarTrigger,
 } from "src/components/ui/sidebar";
 import { ThemeToggle } from "src/components/ui/theme-toggle";
-import { clientSessionToken } from "src/lib/http";
 
 // Menu items.
 const items = [
@@ -56,7 +56,17 @@ const items = [
   },
 ];
 
-export function AppSidebar() {
+export async function AppSidebar() {
+  const sessionToken = (await cookies()).get("sessionToken")?.value;
+  const filteredItems = items.filter((item) => {
+    if (item.title === "Login" || item.title === "Sign up") {
+      return !sessionToken;
+    }
+    if (item.title === "Profile" || item.title === "Add new products") {
+      return sessionToken;
+    }
+    return true;
+  });
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
@@ -65,7 +75,7 @@ export function AppSidebar() {
           <SidebarTrigger></SidebarTrigger>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) =>
+              {filteredItems.map((item) =>
                 item.isButton ? (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>

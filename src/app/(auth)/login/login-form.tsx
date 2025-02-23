@@ -70,6 +70,9 @@ export default function LoginForm() {
           defaultMessage: "Đăng nhập thất bại",
         });
         return err;
+      })
+      .finally(() => {
+        router.refresh();
       });
   });
 

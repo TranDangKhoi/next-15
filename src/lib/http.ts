@@ -144,7 +144,7 @@ const request = async <TResponse, TBody = unknown>(
         }).then((res) => {
           if (res.ok) {
             clientSessionToken.value = "";
-            location.href = "/login";
+            window.location.href = "/login";
           }
         });
       } else {

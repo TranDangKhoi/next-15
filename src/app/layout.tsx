@@ -19,7 +19,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Homepage",
+  title: {
+    template: "%s | Next.js simple project",
+    default: "Next.js simple project",
+  },
   description: "Next.js v15 App Router",
 };
 
@@ -31,6 +34,7 @@ export default async function RootLayout({
   const cookieStore = await cookies();
   const sessionToken = cookieStore.get("sessionToken")?.value as string;
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
+
   return (
     <html
       lang="en"

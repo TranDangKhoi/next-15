@@ -2,7 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useContext, useMemo, useState } from "react";
 import { ControllerRenderProps, FieldValues, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { mediaApiRequest } from "src/app/api/media/requests";
@@ -23,6 +24,7 @@ import { handleApiErrorResponse } from "src/lib/utils";
 import { addProductSchema, TAddProductSchema } from "src/validations/products.validation";
 
 export default function AddProductsForm() {
+  const router = useRouter();
   const [previewImageFile, setPreviewImageFile] = useState<File>();
   const previewImageURL = useMemo(() => {
     return previewImageFile ? URL.createObjectURL(previewImageFile) : "";
@@ -117,6 +119,7 @@ export default function AddProductsForm() {
       toast.success("Add product successfully");
       addProductsForm.reset();
       setPreviewImageFile(undefined);
+      router.push("/products");
     } catch (error) {
       handleApiErrorResponse({
         error,

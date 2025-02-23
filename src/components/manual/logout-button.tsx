@@ -18,6 +18,8 @@ export default function LogoutButton({ children }: { children: ReactNode }) {
       handleApiErrorResponse({
         error: err,
       });
+    } finally {
+      router.refresh();
     }
   };
   return (

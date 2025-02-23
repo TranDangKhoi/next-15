@@ -4,5 +4,7 @@ import http from "src/lib/http";
 
 export const productsApiRequest = {
   getProducts: () => http.get<IApiResponse<IProduct[]>>("/products"),
-  addProduct: (body: IProduct) => http.post<IApiResponse<IProduct>, IProduct>("/products", body),
+  getProductDetail: (id: string) => http.get<IApiResponse<IProduct>>(`/products/${id}`),
+  addProduct: (body: Omit<IProduct, "id">) =>
+    http.post<IApiResponse<IProduct>, Omit<IProduct, "id">>("/products", body),
 };

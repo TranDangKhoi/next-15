@@ -1,7 +1,14 @@
+import { Pencil, Trash2 } from "lucide-react";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { productsApiRequest } from "src/app/api/products/requests";
 import { Button } from "src/components/ui/button";
+
+export const metadata: Metadata = {
+  title: "Products",
+  description: "Products page",
+};
 
 export default async function ProductsPage() {
   const productListResponse = await productsApiRequest.getProducts();
@@ -18,8 +25,9 @@ export default async function ProductsPage() {
 
       <div className="mt-8 grid grid-cols-3 gap-6">
         {products.map((product) => (
-          <div
-            key={product.name}
+          <Link
+            href={`/products/${product.id}`}
+            key={product.id}
             className="border rounded-lg p-4 shadow-sm"
           >
             {product.image && (
@@ -44,10 +52,30 @@ export default async function ProductsPage() {
                 .format(product.price)
                 .replace(/\./g, ",")}
             </p>
-          </div>
+            <div className="flex gap-2 mt-4">
+              <Link
+                href={`/products/edit/${product.id}`}
+                className="flex-1"
+              >
+                <Button
+                  variant="outline"
+                  className="w-full"
+                >
+                  <Pencil className="w-4 h-4 mr-2" />
+                  Edit
+                </Button>
+              </Link>
+              <Button
+                variant="destructive"
+                className="flex-1"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
+              </Button>
+            </div>
+          </Link>
         ))}
       </div>
-
       {products.length === 0 && (
         <div className="text-center text-gray-500 mt-8">No products found. Start by adding some products.</div>
       )}
